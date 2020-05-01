@@ -1,1 +1,162 @@
-<html> 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Weather App</title>
+
+</head>
+
+<body>
+    <div class="header">
+        <h1 class="weather">Weather Dashboard</h1>
+    </div>
+    <div class="container container-fluid">
+        <div class="row">
+            <div class="form-group col-4">
+                <label for="search-city">Search for a city:</label>
+                <input type="city-name" class="form-control" id="inputCity" aria-describedby="cityName">
+                <button><i class="fas fa-search" id="search-button"></i></button>
+            </div>
+            <div class="column col-6">
+                <div class="jumbotron jumbotron-fluid">
+                    <div class="container" id="forecast-card">
+                        <h1 class="city">Seattle</h1>
+                        <div id="temperature">Temperature:</div>
+                        <p id="humidity">Humidity: </p>
+                        <p id="wind-speed">Wind Speed: </p>
+                        <p>UV Index:<button type="button" class="btn btn-danger"></button></p>
+                    </div>
+                </div>
+                <div class="jumbotron jumbotron-fluid" id="day-forecast">
+                    <div class="column col-2">
+                        <div class="card">
+
+                            forecast
+                        </div>
+                    </div>
+                    <div class="column col-2">
+                        <div class="card">
+
+                            forecast
+                        </div>
+                    </div>
+                    <div class="column col-2">
+                        <div class="card">
+
+                            forecast
+                        </div>
+                    </div>
+                    <div class="column col-2">
+                        <div class="card">
+
+                            forecast
+                        </div>
+                    </div>
+                    <div class="column col-2">
+                        <div class="card">
+
+                            forecast
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+</body>
+
+
+<script>
+
+    let city = "Dallas";
+    // let city = $("#inputCity");
+
+    let humidity = $(".humidity")
+    let windSpeed = $(".wind-speed")
+    let UVIndex = $(".UV-Index")
+
+
+    let searchArr = [];
+
+    let APIKey = "40d79d9422785b1127322203cbe71e73";
+
+    // $(document).ready(function () {
+
+
+    // });
+    // let lat = "41.85"
+    // let lon = "-87.65"
+
+
+    $("#search-button").click(function () {
+        $(this).text(fetchWeatherDetails);
+    });
+
+
+
+
+
+
+
+
+
+
+    // let uvURL = `https://api.openweathermap.org/data/2.5/uvi?appid=${APIKey}&lat=${lat}&lon=${lon}`
+    // $.ajax({
+    //     url: uvURL,
+    //     method: "GET"
+    // }).then(function(response){
+    //     console.log(response)
+    // }
+
+
+    $("#search-button").on("click", fetchWeatherDetails);
+
+    function fetchWeatherDetails() {
+
+        let forecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIKey}`
+        $.ajax({
+            url: forecastURL,
+            method: "GET"
+        }).then(function (response) {
+
+            let temperature = $("<p>").text("Temperature: " + response.main.temp);
+            $("#temperature").append(temperature);
+            console.log(response);
+            // $(temperature).text(JSON.stringify(response));
+        });
+
+        // let fiveDayURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKey}`
+        // $.ajax({
+        //     url: fiveDayURL,
+        //     method: "GET"
+        // }).then(function (response) {
+        //     $(this).text()
+        //     console.log(response)
+        // });
+    };
+
+    function displayWeatherDetails(APIResponse) {
+        // city.text = response.city.name (However it is structured within api)
+        console.log(response);
+    }
+
+
+
+
+
+
+</script>
