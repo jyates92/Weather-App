@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
     <link rel="stylesheet" href="style.css" />
     <title>Weather App</title>
 
@@ -23,48 +24,56 @@
         <div class="row">
             <div class="form-group col-4">
                 <label for="search-city">Search for a city:</label>
-                <input type="city-name" class="form-control" id="inputCity" aria-describedby="cityName">
-                <button><i class="fas fa-search" id="search-button"></i></button>
+                <div class="d-flex flex-row">
+                    <input type="city-name" class="form-control" id="inputCity" aria-describedby="cityName">
+                    <button><i class="fas fa-search" id="search-button"></i></button>
+                </div>
+                <div class="form"></div>
+                <div class="d-flex flex-column" id="search-list-wrapper">               
+                </div>
             </div>
-            <div class="column col-6">
+            <div class="column col-8">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container" id="forecast-card">
-                        <h1 class="city">Seattle</h1>
-                        <div id="temperature">Temperature:</div>
+                        <div class="d-flex flex-row">                  
+                            <h1 class="city" id="city">City</h1>
+                            <img src="http://openweathermap.org/img/wn/10d@2x.png" id="weathericon" />
+                        </div>
+                        <p id="temperature">Temperature:</p>
                         <p id="humidity">Humidity: </p>
                         <p id="wind-speed">Wind Speed: </p>
-                        <p>UV Index:<button type="button" class="btn btn-danger"></button></p>
+                        <p>UV Index:<button type="button" class="btn btn-danger" id="UV-tag"></button></p>
                     </div>
                 </div>
+
+                <h1>5-Day Forecast:</h1>
+
                 <div class="jumbotron jumbotron-fluid" id="day-forecast">
-                    <div class="column col-2">
-                        <div class="card">
-
-                            forecast
+                    <div class="row" >
+                        <div class="column col-2">
+                            <div class="card dayForecast" id="day-one">
+                  
+                            </div>
                         </div>
-                    </div>
-                    <div class="column col-2">
-                        <div class="card">
-
-                            forecast
+                        <div class="column col-2">
+                            <div class="card dayForecast" id="day-two">
+                             
+                            </div>
                         </div>
-                    </div>
-                    <div class="column col-2">
-                        <div class="card">
-
-                            forecast
+                        <div class="column col-2">
+                            <div class="card dayForecast" id="day-three">
+                        
+                            </div>
                         </div>
-                    </div>
-                    <div class="column col-2">
-                        <div class="card">
-
-                            forecast
+                        <div class="column col-2">
+                            <div class="card dayForecast" id="day-four">
+                   
+                            </div>
                         </div>
-                    </div>
-                    <div class="column col-2">
-                        <div class="card">
-
-                            forecast
+                        <div class="column col-2">
+                            <div class="card dayForecast" id="day-five">
+                      
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -80,86 +89,131 @@
 
 
 <script>
-
-    let city = "Dallas";
-    // let city = $("#inputCity");
-
-    let humidity = $(".humidity")
-    let windSpeed = $(".wind-speed")
-    let UVIndex = $(".UV-Index")
-
-
-    let searchArr = [];
-
+    let searchList = [];
     let APIKey = "40d79d9422785b1127322203cbe71e73";
-
-    // $(document).ready(function () {
-
-
-    // });
-    // let lat = "41.85"
-    // let lon = "-87.65"
-
-
-    $("#search-button").click(function () {
-        $(this).text(fetchWeatherDetails);
-    });
-
-
-
-
-
-
-
-
-
-
-    // let uvURL = `https://api.openweathermap.org/data/2.5/uvi?appid=${APIKey}&lat=${lat}&lon=${lon}`
-    // $.ajax({
-    //     url: uvURL,
-    //     method: "GET"
-    // }).then(function(response){
-    //     console.log(response)
-    // }
-
-
+    //$("#search-button").unbind('click');
     $("#search-button").on("click", fetchWeatherDetails);
 
-    function fetchWeatherDetails() {
+   
+    //$("#search-button").on("click", fetchWeatherDetails);
 
-        let forecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIKey}`
+    function fetchWeatherDetails() {
+        let city = $("#inputCity").val();
+
+        let fiveDayURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIKey}`
         $.ajax({
-            url: forecastURL,
+            url: fiveDayURL,
             method: "GET"
         }).then(function (response) {
-
-            let temperature = $("<p>").text("Temperature: " + response.main.temp);
-            $("#temperature").append(temperature);
             console.log(response);
-            // $(temperature).text(JSON.stringify(response));
+            //console.log('searchList')
+            //console.log(localStorage.getItem('data'))
+            let lat = (response.city.coord.lat)
+            let lon = (response.city.coord.lon)
+            fetchUVIndex(response, lat, lon);
+
         });
 
-        // let fiveDayURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKey}`
-        // $.ajax({
-        //     url: fiveDayURL,
-        //     method: "GET"
-        // }).then(function (response) {
-        //     $(this).text()
-        //     console.log(response)
-        // });
     };
 
-    function displayWeatherDetails(APIResponse) {
-        // city.text = response.city.name (However it is structured within api)
-        console.log(response);
+
+
+    function fetchUVIndex(response, lat, lon) {
+        let uvURL = `https://api.openweathermap.org/data/2.5/uvi?appid=${APIKey}&lat=${lat}&lon=${lon}`
+        $.ajax({
+            url: uvURL,
+            method: "GET"
+        }).then(function (cresponse) {
+            response.UVIIndex = cresponse.value
+            searchList.push(response)
+            
+            $("#search-list-wrapper").html("");
+            let innerStr = "";
+            searchList.forEach(searchItem => {
+                innerStr += `<button class="city-name">${searchItem.city.name}</button>`;
+            })
+            $("#search-list-wrapper").html(innerStr)
+            $(".city-name").each(function(index) {           
+                $(this).on("click", function(){                 
+                    displayWeatherDetails(searchList[index]);
+                });
+            });
+            localStorage.setItem('data', searchList)
+            displayWeatherDetails(response);
+        })
+        //return UVI;
+    };
+
+    function getFormattedDate(date) {
+        var year = date.getFullYear();
+
+        var month = (1 + date.getMonth()).toString();
+        //month = month.length > 1 ? month : '0' + month;
+
+        var day = date.getDate().toString();
+        //day = day.length > 1 ? day : '0' + day;
+        
+        return month + '/' + day + '/' + year;
+    }
+ 
+    function displayWeatherDetails(response) {
+        // console.log(response);
+        //$("#temperature").text(response.city.name);
+        let wdate =new Date(response.list[0].dt_txt)
+        let wdateStr = getFormattedDate(wdate)        
+        let i, indexList = [0,7,15,23,31];
+        $("#day-one").html("");
+        $("#day-two").html("");
+        $("#day-three").html("");
+        $("#day-four").html("");
+        $("#day-five").html("");
+        let kelvin;
+        let iconUrl;
+        for(j=0; j < 5; j++) {
+            let dayStr = "";
+            i = indexList[j];         
+            iconUrl = 'http://openweathermap.org/img/wn/' + response.list[i].weather[0].icon + '@2x.png'  
+            kelvin = parseFloat(response.list[i].main.temp - 273.15) * 9 / 5 + 32;
+            kelvin = (Math.round(kelvin * 100) / 100).toFixed(2);
+
+            dayStr += `<p id="temperature">${getFormattedDate(new Date(response.list[i].dt_txt))}</p><div>
+            <img src=${iconUrl} />
+            <p id="temperature">Temperature:${kelvin}</p>
+            <p id="humidity">Humidity: ${response.list[i].main.humidity}% </p>`;          
+            if (j===0) $("#day-one").html(dayStr)
+            if (j===1) $("#day-two").html(dayStr)
+            if (j===2) $("#day-three").html(dayStr)
+            if (j===3) $("#day-four").html(dayStr)
+            if (j===4) $("#day-five").html(dayStr)
+        }
+      
+
+        $("#city").text(response.city.name + '(' + wdateStr + ')');
+        kelvin = parseFloat(response.list[0].main.temp - 273.15) * 9 / 5 + 32;
+        //$("#temperature").text("Temperature: " + response.list[0].main.temp + "°F");
+        kelvin = (Math.round(kelvin * 100) / 100).toFixed(2);
+        $("#temperature").text("Temperature: " + kelvin + "°F");
+        // Kelvin = (0 kelvin − 273.15) × 9/5 + 32
+        $("#humidity").text("Humidity: " + response.list[0].main.humidity + "%");
+        $("#wind-speed").text("Wind speed: " + response.list[0].wind.speed + "MPH");
+        $("#UV-tag").text(response.UVIIndex);
+        //$('#weathericon').src = 'http://openweathermap.org/img/wn/10d@2x.png'    
+        iconUrl = 'http://openweathermap.org/img/wn/' + response.list[0].weather[0].icon + '@2x.png'  
+        $('#weathericon').attr("src", iconUrl)
+        // $("#day-one").text("Temperature: " + response.list[0].main.temp);
+        // $("#day-two").text("Temperature: " + response.list[7].main.temp);
+        // $("#day-three").text("Temperature: " + response.list[15].main.temp);
+        // $("#day-four").text("Temperature: " + response.list[23].main.temp);
+        // $("#day-five").text("Temperature: " + response.list[31].main.temp);
     }
 
 
+
+            // $("#day-two").text("Temperature: " + response.list[7].main.temp);
+
+            // $(temperature).text(JSON.stringify(response));
 
 
 
 
 </script>
-
-
-P.

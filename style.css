@@ -14,3 +14,34 @@ color: white;
 #day-forecast {
     display: block;
 }
+
+.jumbotron {
+    border-style: solid;
+    border-color: darkslategray;
+    border-width: 1px;
+    padding: -25px;
+}
+
+.forecast-jumbo {
+    border-radius: 10%;
+}
+
+#forecast-card {
+   
+}
+
+.city {
+    margin-bottom: 50px;
+}
+
+.container {
+    max-width: 100%;
+}
+
+.card {
+    background-color: blue;
+    color: white;
+}
+#weathericon {
+    background-color: gray;
+}
