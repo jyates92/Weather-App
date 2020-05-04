@@ -29,13 +29,13 @@
                     <button><i class="fas fa-search" id="search-button"></i></button>
                 </div>
                 <div class="form"></div>
-                <div class="d-flex flex-column" id="search-list-wrapper">               
+                <div class="d-flex flex-column" id="search-list-wrapper">
                 </div>
             </div>
             <div class="column col-8">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container" id="forecast-card">
-                        <div class="d-flex flex-row">                  
+                        <div class="d-flex flex-row">
                             <h1 class="city" id="city">City</h1>
                             <img src="http://openweathermap.org/img/wn/10d@2x.png" id="weathericon" />
                         </div>
@@ -49,52 +49,45 @@
                 <h1>5-Day Forecast:</h1>
 
                 <div class="jumbotron jumbotron-fluid" id="day-forecast">
-                    <div class="row" >
+                    <div class="row">
                         <div class="column col-2">
                             <div class="card dayForecast" id="day-one">
-                  
+
                             </div>
                         </div>
                         <div class="column col-2">
                             <div class="card dayForecast" id="day-two">
-                             
+
                             </div>
                         </div>
                         <div class="column col-2">
                             <div class="card dayForecast" id="day-three">
-                        
+
                             </div>
                         </div>
                         <div class="column col-2">
                             <div class="card dayForecast" id="day-four">
-                   
+
                             </div>
                         </div>
                         <div class="column col-2">
                             <div class="card dayForecast" id="day-five">
-                      
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
-
-
-
 </body>
-
 
 <script>
     let searchList = [];
     let APIKey = "40d79d9422785b1127322203cbe71e73";
-    //$("#search-button").unbind('click');
     $("#search-button").on("click", fetchWeatherDetails);
 
-   
+
     //$("#search-button").on("click", fetchWeatherDetails);
 
     function fetchWeatherDetails() {
@@ -116,8 +109,6 @@
 
     };
 
-
-
     function fetchUVIndex(response, lat, lon) {
         let uvURL = `https://api.openweathermap.org/data/2.5/uvi?appid=${APIKey}&lat=${lat}&lon=${lon}`
         $.ajax({
@@ -126,42 +117,33 @@
         }).then(function (cresponse) {
             response.UVIIndex = cresponse.value
             searchList.push(response)
-            
             $("#search-list-wrapper").html("");
             let innerStr = "";
             searchList.forEach(searchItem => {
                 innerStr += `<button class="city-name">${searchItem.city.name}</button>`;
             })
             $("#search-list-wrapper").html(innerStr)
-            $(".city-name").each(function(index) {           
-                $(this).on("click", function(){                 
+            $(".city-name").each(function (index) {
+                $(this).on("click", function () {
                     displayWeatherDetails(searchList[index]);
                 });
             });
             localStorage.setItem('data', searchList)
             displayWeatherDetails(response);
         })
-        //return UVI;
     };
 
     function getFormattedDate(date) {
         var year = date.getFullYear();
-
         var month = (1 + date.getMonth()).toString();
-        //month = month.length > 1 ? month : '0' + month;
-
         var day = date.getDate().toString();
-        //day = day.length > 1 ? day : '0' + day;
-        
         return month + '/' + day + '/' + year;
     }
- 
+
     function displayWeatherDetails(response) {
-        // console.log(response);
-        //$("#temperature").text(response.city.name);
-        let wdate =new Date(response.list[0].dt_txt)
-        let wdateStr = getFormattedDate(wdate)        
-        let i, indexList = [0,7,15,23,31];
+        let wdate = new Date(response.list[0].dt_txt)
+        let wdateStr = getFormattedDate(wdate)
+        let i, indexList = [0, 7, 15, 23, 31];
         $("#day-one").html("");
         $("#day-two").html("");
         $("#day-three").html("");
@@ -169,24 +151,24 @@
         $("#day-five").html("");
         let kelvin;
         let iconUrl;
-        for(j=0; j < 5; j++) {
+        for (j = 0; j < 5; j++) {
             let dayStr = "";
-            i = indexList[j];         
-            iconUrl = 'http://openweathermap.org/img/wn/' + response.list[i].weather[0].icon + '@2x.png'  
+            i = indexList[j];
+            iconUrl = 'http://openweathermap.org/img/wn/' + response.list[i].weather[0].icon + '@2x.png'
             kelvin = parseFloat(response.list[i].main.temp - 273.15) * 9 / 5 + 32;
             kelvin = (Math.round(kelvin * 100) / 100).toFixed(2);
 
             dayStr += `<p id="temperature">${getFormattedDate(new Date(response.list[i].dt_txt))}</p><div>
             <img src=${iconUrl} />
             <p id="temperature">Temperature:${kelvin}</p>
-            <p id="humidity">Humidity: ${response.list[i].main.humidity}% </p>`;          
-            if (j===0) $("#day-one").html(dayStr)
-            if (j===1) $("#day-two").html(dayStr)
-            if (j===2) $("#day-three").html(dayStr)
-            if (j===3) $("#day-four").html(dayStr)
-            if (j===4) $("#day-five").html(dayStr)
+            <p id="humidity">Humidity: ${response.list[i].main.humidity}% </p>`;
+            if (j === 0) $("#day-one").html(dayStr)
+            if (j === 1) $("#day-two").html(dayStr)
+            if (j === 2) $("#day-three").html(dayStr)
+            if (j === 3) $("#day-four").html(dayStr)
+            if (j === 4) $("#day-five").html(dayStr)
         }
-      
+
 
         $("#city").text(response.city.name + '(' + wdateStr + ')');
         kelvin = parseFloat(response.list[0].main.temp - 273.15) * 9 / 5 + 32;
@@ -198,20 +180,10 @@
         $("#wind-speed").text("Wind speed: " + response.list[0].wind.speed + "MPH");
         $("#UV-tag").text(response.UVIIndex);
         //$('#weathericon').src = 'http://openweathermap.org/img/wn/10d@2x.png'    
-        iconUrl = 'http://openweathermap.org/img/wn/' + response.list[0].weather[0].icon + '@2x.png'  
+        iconUrl = 'http://openweathermap.org/img/wn/' + response.list[0].weather[0].icon + '@2x.png'
         $('#weathericon').attr("src", iconUrl)
-        // $("#day-one").text("Temperature: " + response.list[0].main.temp);
-        // $("#day-two").text("Temperature: " + response.list[7].main.temp);
-        // $("#day-three").text("Temperature: " + response.list[15].main.temp);
-        // $("#day-four").text("Temperature: " + response.list[23].main.temp);
-        // $("#day-five").text("Temperature: " + response.list[31].main.temp);
+
     }
-
-
-
-            // $("#day-two").text("Temperature: " + response.list[7].main.temp);
-
-            // $(temperature).text(JSON.stringify(response));
 
 
 
