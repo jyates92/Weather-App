@@ -1,37 +1,49 @@
-## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/jyates92/Weather-App/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+# Title
 
-### Markdown
+Weather App
+[Usage](#usage)
+[Contributing](#name)
+[Email](#email)
+[Github](#github)
+[Description](#description)
+[Photo](#photo)
+[Tests](#tests)
+[License](#license)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+# Usage
 
-```markdown
-Syntax highlighted code block
+Jeremiah Yates
 
-# Header 1
-## Header 2
-### Header 3
+# Contributing
 
-- Bulleted
-- List
+Jyates92
 
-1. Numbered
-2. List
+# Description
 
-**Bold** and _Italic_ and `Code` text
+This application calls on a weather API to provide basic weather data for your speified area entered into the input. It also caches that data and stores it locally so that previous entries can be selected. 
 
-[Link](url) and ![Image](src)
-```
+  # Image
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+  ![PHOTO]()
 
-### Jekyll Themes
+  # Tests
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/jyates92/Weather-App/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+  None.
 
-### Support or Contact
+  # Email
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+  jeremiahyates1992@gmail.com
+
+  # Github
+
+  github.com/jyates92
+
+  # License
+
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+  # How it works
+
+  [![Readme Gen]()]( "")
