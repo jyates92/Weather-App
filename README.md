@@ -26,7 +26,7 @@ This application calls on a weather API to provide basic weather data for your s
 
   # Image
 
-  ![PHOTO]()
+  ![PHOTO](https://i.imgur.com/SRh2pSA.jpg)
 
   # Tests
 
