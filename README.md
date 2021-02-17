@@ -38,12 +38,13 @@ This application calls on a weather API to provide basic weather data for your s
 
   # Github
 
-  github.com/jyates92
+  https://jyates92.github.io/Weather-App/
 
   # License
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
   # How it works
-
+  Type in a city and hit search!
+  
   [![Readme Gen]()]( "")
